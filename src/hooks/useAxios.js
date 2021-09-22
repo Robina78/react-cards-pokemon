@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
-import Axios from "axios";
+import axios from "axios";
 import useLocalStorage from "./useLocalStorage";
 
 
-const useAxios = (keyInLS, baseUrl) => {
-    const [response, setResponse] = useLocalStorage(keyInLS);
-
+function useAxios(keyInLS, baseUrl) {
+    const [responses, setResponses] = useLocalStorage(keyInLS);
+  
     const addResponseData = async (formatter = data => data, restOfUrl = "") => {
-        const response = await Axios.get(`${baseUrl}${restOfUrl}`);
-        setResponse(data => [...data, formatter(response.data)]);
+      const response = await axios.get(`${baseUrl}${restOfUrl}`);
+      setResponses(data => [...data, formatter(response.data)]);
     };
-
-    const cleareResponse = () => setResponse([]);
-
-    return [response, addResponseData, cleareResponse];
-};
+  
+    const clearResponses = () => setResponses([]);
+  
+    return [responses, addResponseData, clearResponses];
+  }
 
 export default useAxios;
